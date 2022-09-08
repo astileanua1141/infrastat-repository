@@ -1,0 +1,13 @@
+GET http://localhost:3000/catalog/
+
+###
+GET http://localhost:3000/catalog/01
+
+###
+
+POST http://localhost:3000/catalog/
+Content-Type: application/json
+
+{
+   "text":"dron"
+}
