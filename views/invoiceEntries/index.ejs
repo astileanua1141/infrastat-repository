@@ -1,0 +1,12 @@
+<h2> 
+    ALL invoice entries
+</h2>
+<form action="/invoiceEntries" method="GET">
+    <label>Nr. Factura</label>
+    <input type="text" name="invoiceNo" value="<%= searchOptions.invoiceNo%>"/>
+    <button type="submit">Cautare</button>
+</form>
+<br>
+<% invoiceEntries.forEach(invoiceEntry => { %>
+   <div><%= invoiceEntry.nc8Code %></div> 
+<% }) %>
