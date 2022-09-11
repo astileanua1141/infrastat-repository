@@ -13,9 +13,6 @@ db.once('open', () => console.log('Connected to Database'))
 
 app.use(express.json())
 
-// const subscribersRouter = require('./routes/subscribers')
-// app.use('/subscribers', subscribersRouter)
-// localhost:3000/subscribers/anything
 
 const catalogRouter = require('./routes/catalog')
 app.use('/catalog', catalogRouter)

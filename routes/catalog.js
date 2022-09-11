@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 // Getting one
-router.get("/:id", getArticleById, populateChildren, async (req, res) => {
+router.get("/:id", getArticleById, async (req, res) => {
   res.send(res.article);
 });
 
