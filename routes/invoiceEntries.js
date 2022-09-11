@@ -5,7 +5,7 @@ const InvoiceEntry = require('../models/invoiceEntry.js')
 // All invoice entries
 router.get("/", async (req, res) => {
   let searchOptions = {}
-  if (req.query.  != null && req.query.invoiceNo !== '') {
+  if (req.query.invoiceNo  !== null && req.query.invoiceNo !== '') {
     searchOptions.invoiceNo = new RegExp(req.query.invoiceNo, 'i')
   }
   try {
