@@ -1,54 +1,63 @@
 const mongoose = require("mongoose");
 
 const invoiceSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.SchemaTypes.ObjectId,
-    required: true,
-  },
-  company: {
-    type: String,
+  firmName: {
+    type: String, //todo Reference to object
     required: true,
   },
   timeline: {
     type: String, //ex: 2022-06
     required: true,
   },
-  number:{
-    type: String, 
-      required: true,
+  createdAt:{
+    type:Date,
+    required:true,
+    default:Date.now
   },
-  totalVal:{
-    type: String, //round up
-      required: false,
-      default:"0"
+  invoiceNo: {
+    type: String,
+    required: true,
   },
-  totalMass:{
+  totalVal: {
     type: Number, //round up
-      required: false,
-      default:0
+    default: 0
+  },
+  totalMass: {
+    type: Number, //round up
+    default: 0
 
   },
-  exchangeRate:{
-    type: String, //decimal number
-      required: false,
-  }, 
-  currency:{
-    type: String, //decimal number
-    required: false,
+  exchangeRate: {
+    type: String //decimal number
   },
-  deliveryTermsCode:{
-    type: String,
-      required: true,
+  currency: {
+    type: String //EUR, GBP, RON
   },
-  natureOfTransactionCodeA:{ 
+  deliveryTermsCode: {
     type: String,
-      required: true,
+    required: true
   },
-  natureOfTransactionCodeB:{
+  natureOfTransactionCodeA: {
     type: String,
-      required: true,
-  }
+    required: true
+  },
+  natureOfTransactionCodeB: {
+    type: String,
+    required: true
+  },
+  partnerCountryCode: {
+    type: String
+  },
+  partnerVatNr: {
+    type: String
+  },
+
+  entries: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'InvoiceEntry'
+  }]
 });
+
 
 module.exports = mongoose.model("Invoice", invoiceSchema);
 

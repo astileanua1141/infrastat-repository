@@ -1,0 +1,19 @@
+<h3>Adauga Cod Natura Tranzactiei</h3>
+<label>Categorie</label>
+<select name="category">
+    <% if(transactionCode != null && transactionCode.code != null) { %>
+        <option selected label="<% transactionCode.code %>" value="<% transactionCode.code %> "/>
+    <% } else { %>
+        <option  label="A" value="A"/>
+        <option selected label="B" value="B"/>
+    <% } %>
+</select>
+<label>Cod</label>
+<input type="text" name="code" value="<%= transactionCode.code %>"/>
+<br/>
+<label>Descriere</label>
+<input type="text" name="name" value="<%= transactionCode.name %>" />
+<br/>
+<label>RefCode</label>
+<input type="text" name="refCode" value="<%= transactionCode.refCode %>" />
+<br/>

@@ -1,0 +1,21 @@
+<h2> 
+    ALL invoice entries //todo
+</h2>
+<form action="/invoices" method="GET">
+    <label>Cauta dupa </label>
+    <select name="searchField">
+        <% availableSearchTags.forEach((tag) => { %> 
+            <% if (tag.searchField === searchOptions.searchBy) { %> 
+                <option selected label="<%= tag.displayName %>" value="<%= tag.searchField %>"/>
+            <% } else {%>    
+                <option label="<%= tag.displayName %>" value="<%= tag.searchField %>"/>
+            <% } %>
+        <% }) %> 
+    </select>
+    <input type="text" name="searchValue" value="<%= searchOptions.searchValue%>"/>
+    <button type="submit">Cautare</button>
+</form>
+<br>
+<% invoices.forEach(invoice => { %>
+   <div><%= invoice.invoiceNo %> - <%= invoice.createdAt %> </div> 
+<% }) %>
