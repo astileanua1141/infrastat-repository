@@ -73,11 +73,11 @@ router.get('/:id/edit', async (req, res) => {
 })
 
 //modify
-router.put('/:id', async (req, res) => { 
+router.put('/:id', async (req, res) => {
   let invoiceEntry 
   try {
     invoiceEntry = await InvoiceEntry.findById(req.params.id)
-    invoiceEntry.invoiceNo = req.body.invoiceNo,
+    invoiceEntry.invoiceNo = req.body.invoiceNo, //do not allow edit
     invoiceEntry.nc8Code = req.body.nc8Code,
     invoiceEntry.invoiceValue = req.body.invoiceValue,
     invoiceEntry.statisticalValue = req.body.statisticalValue,

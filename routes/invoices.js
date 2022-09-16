@@ -49,10 +49,6 @@ router.get("/", async (req, res) => {
       {
         searchField : "partnerVatNr",
         displayName : "TVA Partener"
-      },
-      {
-        searchField : "partnerVatNr",
-        displayName : "TVA Partener"
       }]
   })
 });
@@ -93,9 +89,7 @@ router.post("/", async (req, res) => {
   })   
   try {
     const newInvoice = await invoice.save()
-    // TODO:
-    // res.redirect(`invoices/${newInvoice.id}`)
-    res.redirect('/invoices')
+    res.redirect(`invoices/${newInvoice.id}`)
     
   } catch (error) {
     console.log(error.errorMessage)
@@ -110,12 +104,11 @@ router.post("/", async (req, res) => {
 //show by id 
 router.get('/:id', async (req, res) => {
   try {
-    const natureOfTransactions = await NatureOfTransaction.find({})
     const invoice = await Invoice.findById(req.params.id).populate('entries').exec()
     //console.log(invoice)
     res.render('invoices/show', {
-      invoice : invoice,
-      natureOfTransactions :natureOfTransactions })
+      invoice : invoice
+    })
 
   } catch {
     res.redirect('/')
@@ -124,12 +117,62 @@ router.get('/:id', async (req, res) => {
 
 //edit
 router.get('/:id/edit', async (req, res) => {
-  res.send("Edit invoice "+req.params.id)
+  try {
+    const natureOfTransactions = await NatureOfTransaction.find({})
+    const invoice = await Invoice.findById(req.params.id)
+    res.render('invoices/edit', { 
+      invoice : invoice, 
+      natureOfTransactions : natureOfTransactions })
+  } catch  {
+    res.redirect('/invoices')
+  }
+})
+
+//modify
+router.put('/:id', async (req, res) => {
+  let invoice
+  try {
+    const invoice = new Invoice.findById(req.params.id)
+      invoice.firmName = req.body.firmName
+      invoice.timeline = req.body.timeline
+      invoice.invoiceNo = req.body.invoiceNo
+      invoice.totalVal = req.body.totalVal
+      invoice.exchangeRate = req.body.exchangeRate
+      invoice.currency = req.body.currency
+      invoice.deliveryTermsCode = req.body.deliveryTermsCode
+      invoice.natureOfTransactionCodeA = req.body.natureOfTransactionCodeA
+      invoice.natureOfTransactionCodeB = req.body.natureOfTransactionCodeB
+      invoice.entries = invoiceEntryIds
+      await invoice.save()
+      res.redirect(`/invoices/${invoice.id}`)
+  } catch {
+    if (invoice == null) {
+      res.redirect('/')
+    } else {
+      res.render('invoices/edit', {
+        invoice: invoice,
+        errorMessage: "Error updating Invoice"
+      })
+    }
+    
+  }
 })
 
 //delete
 router.delete('/:id/', async (req, res) => {
-  res.send("delete invoice "+req.params.id)
+  let invoice
+  try {
+    const invoice = new Invoice.findById(req.params.id)
+    await invoice.remove()
+    res.render('invoices/')
+    
+  } catch {
+    if (invoice == null ) {
+      res.redirect('/')
+    } else {
+      res.redirect(`/invoices/${invoice.id}`)
+    }
+  }
 })
 
 
