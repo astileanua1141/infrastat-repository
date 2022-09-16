@@ -33,7 +33,7 @@ async function populateChildren(req, res, next) {
       try {
         let children
         children = await Nomenclator.getChildren(element._id);
-        console.log('element  ' + element._id + ' has ' + children.length + ' children.');
+        //console.log('element  ' + element._id + ' has ' + children.length + ' children.');
         element.children = children
       }
       catch (err) {

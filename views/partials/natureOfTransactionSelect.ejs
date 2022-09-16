@@ -1,0 +1,19 @@
+<label> Natura tranzactiei - Cod <%= categoryRef %> </label>
+<select name="natureOfTransactionCode<%= categoryRef %>">
+
+  <% natureOfTransactions.forEach(item => { %>
+    <!-- if the invoice already has an _categoryRef item selected  -->
+   
+    <% if (item.code === invoiceMatch) { %>
+    <option selected label="<%= item.code %> - <%= item.name %>" value="<%= item.code %>" />
+   
+      <% } else { %>
+    <!-- display only _categoryRef items  -->
+    
+    <% if (categoryRef === item.category) { %>
+    <option label="<%= item.code %> - <%= item.name %>" value="<%= item.code %>" />
+        <% } %>
+    
+      <% } %>
+    <% }) %>
+</select>

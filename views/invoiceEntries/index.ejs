@@ -1,12 +1,18 @@
-<h2> 
-    ALL invoice entries
-</h2>
+<h2> Articole declarate </h2>
+
 <form action="/invoiceEntries" method="GET">
-    <label>Nr. Factura</label>
+    <label>Cauta dupa Nr. Factura</label>
     <input type="text" name="invoiceNo" value="<%= searchOptions.invoiceNo%>"/>
     <button type="submit">Cautare</button>
 </form>
-<br>
+
 <% invoiceEntries.forEach(invoiceEntry => { %>
-   <div><%= invoiceEntry.nc8Code %></div> 
+   <div>
+    <%= invoiceEntry.nc8Code %> - Valoare: <%= invoiceEntry.invoiceValue %> | Val. Statistica: <%= invoiceEntry.statisticalValue %> | Masa neta: <%= invoiceEntry.netMass %></div> 
+   <a href="/invoiceEntries/<%= invoiceEntry.id %>">View</a>
+   <a href="/invoiceEntries/<%= invoiceEntry.id %>/edit">Edit</a>
+
+    <%- include('../partials/deleteForm.ejs', 
+        { url : `/invoiceEntries/${invoiceEntry.id}` }) %> 
+
 <% }) %>

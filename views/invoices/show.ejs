@@ -1,0 +1,17 @@
+<h2>Factura <%= invoice.invoiceNo %> </h2>
+<a href="/invoices/<%= invoice._id %>/edit">Edit</a>
+<%- include('../partials/deleteForm.ejs', 
+    { url : `/invoices/${invoice._id}` }) %>
+
+<%- include('_form_fields') %> 
+
+<% if( locals.invoice.entries ) { %> 
+    <ul>
+        <% invoice.entries.forEach( invoiceEntry => { %>
+            <li>Articol: <a href="/invoiceEntries/<%= invoiceEntry._id %>/edit"><%= invoiceEntry.nc8Code %></a>
+                | Valoare:  <%= invoiceEntry.invoiceValue %>
+                | Masa neta: <%= invoiceEntry.netMass %>
+            </li>
+       <% }); %> 
+        </ul>
+<% } %> 

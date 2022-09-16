@@ -14,40 +14,31 @@ const invoiceEntrySchema = new mongoose.Schema({
     required: true
   },
   statisticalValue: {
-    type: Number,
-    required: false
+    type: String
   },
   netMass:{
-    type: Number,
-    required: true
+    type: Number
   },
   countryOfOrigin:{
-    type:String, 
-    required: false
+    type:String
   },
   countryOfDestination:{
-    type:String, 
-    required: false
+    type:String
   },
   countryOfConsignment:{ //expedition country
-    type:String, 
-    required: false
+    type:String
   },
   partnerCountryCode:{
-    type:String, 
-    required: false
+    type:String
   },
   partnerVat:{
-    type:String, 
-    required: false
+    type:String
   },
   supplyUnitCode:{
-    type:String, 
-    required: false
+    type:String
   },
   quantityInSupplyUnits:{
-    type:String, 
-    required: false
+    type:String
   }
 });
 module.exports = mongoose.model("InvoiceEntry", invoiceEntrySchema);

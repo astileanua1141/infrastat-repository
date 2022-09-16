@@ -12,6 +12,7 @@
 
 <label>Curs valutar</label>
 <input type="text" name="exchangeRate" value="<%=invoice.exchangeRate%>" />
+
 <label>Moneda</label>
 <select name="currency">
     <option selected label="EUR" value="EUR" />
@@ -23,34 +24,26 @@
 <label>Conditie de livrare</label>
 <input type="text" name="deliveryTermsCode" value="<%=invoice.deliveryTermsCode%>" />
 <br />
-<label>Natura tranzactiei - Cod A</label>
-<select name="natureOfTransactionCodeA">
-    <% natureOfTransactions.forEach((item)=> { %>
-         <!-- if the invoice already has an A-category item selected  -->
-        <% if(item.code === invoice.natureOfTransactionCodeA) { %>
-            <option selected label="<%= item.code %> - <%= item.name %>" value="<%= invoice.natureOfTransactionCodeA %>" />
-        <% } else { %>
-            <!-- display only A-category items  -->
-            <% if("A" === item.category) { %>
-                <option label="<%= item.code %> - <%= item.name %>" value="<%= invoice.natureOfTransactionCodeA %>" />
-            <% } %>
-        <% } %>
-    <% }) %>
-</select>
-<br />
-<label>Natura tranzactiei - Cod B</label>
 
-<select name="natureOfTransactionCodeB">
-    <% natureOfTransactions.forEach((item)=> { %>
-          <!-- if the invoice already has an B-category item selected  -->
-        <% if(item.code===invoice.natureOfTransactionCodeB) { %>
-            <option selected label="<%= item.code %> - <%= item.name %>" value="<%= invoice.natureOfTransactionCodeB %>" />
-        <% } else { %>
-            <!-- display only B-category items  -->
-            <% if("B" === item.category) { %>
-                <option label="<%= item.code %> - <%= item.name %>" value="<%= invoice.natureOfTransactionCodeA %>" />
-            <% } %>
-        <% } %>
-    <% }) %>
-</select>
-<br />
+<% if (locals.natureOfTransactions) { %> 
+           
+    <%- include('../partials/natureOfTransactionSelect.ejs', {
+        categoryRef : "A" , 
+        invoiceMatch: invoice.natureOfTransactionCodeA  }) %> 
+       
+    <%- include('../partials/natureOfTransactionSelect.ejs', {
+        categoryRef : "B" , 
+        invoiceMatch: invoice.natureOfTransactionCodeB  }) %>
+
+<% } else { %>
+    
+    <label>Natura tranzactiei - Cod A</label>
+    <input type="text" name="natureOfTransactionCodeA" value="<%=invoice.natureOfTransactionCodeA%>" readonly />
+
+    <label>Natura tranzactiei - Cod B</label>
+    <input type="text" name="natureOfTransactionCodeB" value="<%=invoice.natureOfTransactionCodeB%>" readonly /> 
+
+<% } %> 
+    
+
+

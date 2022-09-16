@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const invoiceSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId
+  },
   firmName: {
     type: String, //todo Reference to object
     required: true,
@@ -54,7 +57,8 @@ const invoiceSchema = new mongoose.Schema({
 
   entries: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'InvoiceEntry'
+    ref: 'InvoiceEntry',
+    autoPopulate:true
   }]
 });
 
