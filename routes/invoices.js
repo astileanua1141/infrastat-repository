@@ -128,6 +128,17 @@ router.get('/:id/edit', async (req, res) => {
   }
 })
 
+// edit
+router.get('/:id/addEntry', async (req, res) => {
+  try {
+    const invoiceEntry = new InvoiceEntry()
+    invoiceEntry.invoiceNo = req.params.id
+    res.render('invoiceEntries/new', { invoiceEntry : invoiceEntry })
+  } catch  {
+    res.redirect('/invoiceEntries')
+  }
+})
+
 //modify
 router.put('/:id', async (req, res) => {
   let invoice
