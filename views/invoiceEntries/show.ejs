@@ -1,5 +1,6 @@
 
-<h2><%= invoiceEntry.nc8Code %> </h2>
+<h2>Articol <%= invoiceEntry.nc8Code %> </h2>
+
 <a href="/invoiceEntries/<%= invoiceEntry.id %>/edit">Edit</a>
 <%- include('../partials/deleteForm.ejs', 
     { url : `/invoiceEntries/${invoiceEntry.id}` }) %>
@@ -10,6 +11,6 @@
 <% if (invoices.length > 0 ) { %>
     <h3>Facturi</h3>
     <% invoices.forEach(invoice => { %>   
-        <div><%= invoice.invoiceNo %> - <%= invoice.createdAt %> </div> 
+        <div>Factura <%= invoice.invoiceNo %> - <%= invoice.entries.length %> articole </div> 
     <% }) %>
 <% } %>

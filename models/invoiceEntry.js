@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const invoiceEntrySchema = new mongoose.Schema({
-  invoiceNo:{
-    type:String,
-    required:true
-  },
   nc8Code:{
     type:String,
     required:true

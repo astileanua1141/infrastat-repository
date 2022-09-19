@@ -22,33 +22,60 @@ router.get("/", async (req, res) => {
 
 // New Invoice Entry
 router.get("/new", (req, res) => {
+  console.log("/new - get creates an instance of ie. ")
   res.render('invoiceEntries/new', { invoiceEntry: new InvoiceEntry() });
 });
 
 // Create Invoice Entry
-router.post("/", async (req, res) => {
+router.post("/:invoiceId", async (req, res) => {
+  console.log("POST invoiceEntries /:invoiceId")  
+
   const invoiceEntry = new InvoiceEntry({
-    invoiceNo: req.body.invoiceNo,
     nc8Code: req.body.nc8Code,
     invoiceValue: req.body.invoiceValue,
     statisticalValue: req.body.statisticalValue,
     netMass: req.body.netMass
   })
+ 
 
+  if(req.params.invoiceId){
   try {
     const newInvoiceEntry = await invoiceEntry.save()
-    res.redirect(`invoiceEntries/${newInvoiceEntry.id}`)
+    console.log("SAVED new entry: " + newInvoiceEntry.id)
+    //invoiceNo: req.params.invoiceNo
+    console.log("Updating invoice with ID " + req.params.invoiceId)
+
+    const invoiceId = req.params.invoiceId
+    const invoice = await Invoice.findById(invoiceId)
+    const newEntries = [...invoice.entries, newInvoiceEntry.id ] 
+    console.log("new entries:" + newEntries )
+    invoice.entries = newEntries
+    invoice.save()
+
+    res.redirect(`/invoiceEntries/${newInvoiceEntry.id}`)
   } catch {
     console.log(invoiceEntry)
+    console.log(invoice)
     res.render('invoiceEntries/new', {
       invoiceEntry: invoiceEntry,
       errorMessage: "Error Creating Invoice Entry"
     })
   }
+}else { 
+  console.log(invoiceEntry)
+  console.log ("No invoiceId referenced")
+    res.render('invoiceEntries/new', {
+      invoiceEntry: invoiceEntry,
+      errorMessage: "Error Creating new Article - the reference invoice is missing."
+    })
+
+}
 });
+
 
 //show by id 
 router.get('/:id', async (req, res) => {
+  console.log ("GET invoiceEntries /:id (invoiceEntryId)")
   try {
     const invoiceEntry = await InvoiceEntry.findById(req.params.id)
     const invoices = await Invoice.find ( { entries : invoiceEntry.id}).limit(10).exec()
@@ -73,16 +100,23 @@ router.get('/:id/edit', async (req, res) => {
 })
 
 //modify
-router.put('/:id', async (req, res) => {
+router.put('/:id/:invoiceNo', async (req, res) => {
   let invoiceEntry 
   try {
     invoiceEntry = await InvoiceEntry.findById(req.params.id)
-    invoiceEntry.invoiceNo = req.body.invoiceNo, //do not allow edit
+     //do not allow edit
     invoiceEntry.nc8Code = req.body.nc8Code,
     invoiceEntry.invoiceValue = req.body.invoiceValue,
     invoiceEntry.statisticalValue = req.body.statisticalValue,
     invoiceEntry.netMass = req.body.netMass
     await invoiceEntry.save()
+
+    const invoiceNo = req.params.invoiceNo
+    const invoice = await Invoice.findById(invoiceNo)
+    const newEntries = [...invoice.entries, invoiceEntry.id ] 
+    invoice.entries = newEntries
+    invoice.save()
+
     res.redirect(`/invoiceEntries/${invoiceEntry.id}`)
   } catch {
     if (invoiceEntry == null ) {
@@ -99,10 +133,26 @@ router.put('/:id', async (req, res) => {
 //delete
 router.delete('/:id', async (req, res) => { 
   let invoiceEntry 
+  console.log("Deleting")
   try {
     invoiceEntry = await InvoiceEntry.findById(req.params.id)
+    console.log('Entry: ' + invoiceEntry)
     
-    await invoiceEntry.remove()
+
+    const invoice = await Invoice.find({ entries: invoiceEntry.id })
+    console.log('Entries: ' + invoice.entries.length)
+
+    // await invoiceEntry.delete()
+    if(invoice) { 
+      if( invoice.entries.length == 1) {
+      console.log("deleteing invoice")
+      }else{
+        
+        const { id : { invoice :{ entries : id }}, ...rest} = invoice.entries
+        console.log("rest"+rest)
+
+      }
+    }
     res.render('invoiceEntries/')
     
   } catch {

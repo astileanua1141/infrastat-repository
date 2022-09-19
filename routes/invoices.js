@@ -74,7 +74,7 @@ router.get("/", async (req, res) => {
 
 // Create Invoice
 router.post("/", async (req, res) => {
-  const invoiceEntryIds = await InvoiceEntry.find({ invoiceNo : req.body.invoiceNo}, '_id')
+  console.log( "POST invoice / TO DO ")
   const invoice = new Invoice({
     firmName : req.body.firmName,
     timeline : req.body.timeline,
@@ -84,8 +84,7 @@ router.post("/", async (req, res) => {
     currency : req.body.currency,
     deliveryTermsCode : req.body.deliveryTermsCode,
     natureOfTransactionCodeA : req.body.natureOfTransactionCodeA,
-    natureOfTransactionCodeB : req.body.natureOfTransactionCodeB,
-    entries : invoiceEntryIds
+    natureOfTransactionCodeB : req.body.natureOfTransactionCodeB
   })   
   try {
     const newInvoice = await invoice.save()
@@ -105,7 +104,7 @@ router.post("/", async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const invoice = await Invoice.findById(req.params.id).populate('entries').exec()
-    //console.log(invoice)
+    console.log(invoice)
     res.render('invoices/show', {
       invoice : invoice
     })
@@ -117,6 +116,7 @@ router.get('/:id', async (req, res) => {
 
 //edit
 router.get('/:id/edit', async (req, res) => {
+
   try {
     const natureOfTransactions = await NatureOfTransaction.find({})
     const invoice = await Invoice.findById(req.params.id)
@@ -128,12 +128,14 @@ router.get('/:id/edit', async (req, res) => {
   }
 })
 
-// edit
-router.get('/:id/addEntry', async (req, res) => {
+// add article for existing invoice
+router.get('/:invoiceId/addEntry', async (req, res) => {
   try {
+    console.log("get /:invoiceId/addEntry | invoiceId:" + req.params.invoiceId)
     const invoiceEntry = new InvoiceEntry()
-    invoiceEntry.invoiceNo = req.params.id
-    res.render('invoiceEntries/new', { invoiceEntry : invoiceEntry })
+    res.render('invoiceEntries/new', { 
+      invoiceEntry : invoiceEntry, 
+      invoiceId : req.params.invoiceId })
   } catch  {
     res.redirect('/invoiceEntries')
   }
